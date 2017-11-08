@@ -19,7 +19,7 @@
     <!-- Weight Column -->
     <ng-container matColumnDef="team">
       <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
-      <mat-cell *matCellDef="let element">  </mat-cell>
+      <mat-cell *matCellDef="let element"> {{element.currentConstructor.name}} </mat-cell>
     </ng-container>
 
     <!-- Color Column -->
