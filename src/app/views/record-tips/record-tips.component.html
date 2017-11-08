@@ -1,5 +1,6 @@
 <div class="example-container mat-elevation-z8">
-  <mat-table #table [dataSource]="dataSource">
+  <mat-table id="driverTable" #table [dataSource]="dataSource" [sortablejs]="dataSource.data" [sortablejsOptions]="tableSortOptions"
+    class="sortable-table">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -29,6 +30,6 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;" class="sortable-item"></mat-row>
   </mat-table>
 </div>

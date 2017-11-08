@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -14,15 +14,26 @@ import { DriversService } from '../../services/drivers.service';
 })
 
 export class RecordTipsComponent implements OnInit {
-
   displayedColumns = ['position', 'name', 'team', 'points'];
   dataSource;
+  tableSortOptions;
 
   constructor(private driverService: DriversService) {
     this.dataSource = new RecordTipsDataSource(driverService);
+
+    this.tableSortOptions = {
+      draggable : '.sortable-item',
+      onUpdate: (event: any) => {
+        console.log(this.dataSource.data);
+      }
+    };
   }
 
   ngOnInit() {
+  }
+
+  ngDoCheck() {
+
   }
 
 }
@@ -36,12 +47,14 @@ export interface Driver {
 }
 
 export class RecordTipsDataSource extends DataSource<any> {
+  data: Array<Driver>;
+
   constructor(private driverService: DriversService) {
     super();
     this.driverService = driverService;
   }
 
-  connect(): Observable<Driver[]> {   
+  connect(): Observable<Driver[]> {
     // Get the data needed for the table 
     let responses: Array<Observable<any[]>> = [];
     responses.push(this.driverService.getCurrentStandings());
@@ -76,6 +89,8 @@ export class RecordTipsDataSource extends DataSource<any> {
         combination = combination.sort((a, b) => {
           return parseInt(a.position) > parseInt(b.position) ? 1 : -1;
         });
+
+        this.data = combination;
 
         //Return the combined array of Drivers
         return combination;
